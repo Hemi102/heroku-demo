@@ -1,0 +1,61 @@
+@import '../../../assets/variable.scss';
+
+.logo {
+  max-width: 130px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .title {
+    color: $action-primary;
+  }
+  .sub-title {
+    color: $gray-color4;
+    line-height: 18px !important;
+  }
+}
+.right-menu {
+  width: 70%;
+  height: 40%;
+}
+.header-card {
+  .icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ced4da;
+  }
+  .title {
+    opacity: 0.45;
+  }
+  .sub-title {
+    opacity: 0.65;
+  }
+}
+.right-dropdown {
+  display: none;
+}
+@media (max-width: $small-screen) {
+  .right-menu {
+    display: none !important;
+  }
+  .right-dropdown {
+    display: block;
+    position: relative;
+    .dropdown {
+      position: absolute;
+      width: 227px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      right: 0;
+      z-index: 100;
+      background-color: $white-color;
+      padding: 10px 28px;
+    }
+  }
+}

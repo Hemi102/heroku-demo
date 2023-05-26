@@ -1,15 +1,16 @@
 import React from 'react';
-import {Header} from './header';
+import Header from './header';
+import Sidebar from './sidebar';
 
-const Layout = ({isLogedIn, children}) => {
+const Layout = ({children}) => {
   return (
-    <main>
-      <Header>
-        <Header.Logo />
-        {isLogedIn && <Header.RightMenu />}
-      </Header>
-      {children}
-    </main>
+    <div>
+      <Sidebar />
+      <main className="body-content has-sidebar">
+        <Header />
+        {children}
+      </main>
+    </div>
   );
 };
 

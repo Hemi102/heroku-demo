@@ -11,9 +11,7 @@ const LoginForm = ({checked, handleCheckChange, formSubmitHandler}) => (
     }}
     enableReinitialize={true}
     validationSchema={validationSchema}
-    onSubmit={(values, {setErrors, setSubmitting}) => {
-      formSubmitHandler(values, setErrors, setSubmitting);
-    }}
+    onSubmit={formSubmitHandler}
   >
     {formik => {
       return (

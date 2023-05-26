@@ -1,7 +1,8 @@
-import Login from 'containers/login';
+import AppRoutes from 'routes';
+import {getAccessToken} from 'utils/common';
 
 function App() {
-  return <Login />;
+  return <AppRoutes isLoggedIn={true} />;
 }
 
 export default App;

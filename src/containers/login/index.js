@@ -1,9 +1,13 @@
 import LoginForm from 'components/login/LoginForm';
 import React, {useState} from 'react';
+import {useNavigate} from 'react-router';
+import {setAccessToken} from 'utils/common';
 import './login.scss';
 
 const Login = () => {
   const [checked, setCheck] = useState(false);
+
+  const navigate = useNavigate();
   const handleCheckChange = () => {
     setCheck(!checked);
   };
@@ -19,7 +23,8 @@ const Login = () => {
             checked={checked}
             handleCheckChange={handleCheckChange}
             formSubmitHandler={() => {
-              console.log('submitted');
+              setAccessToken('token');
+              navigate('/dashboard');
             }}
           />
         </div>

@@ -2,6 +2,14 @@
 @import '~bootstrap/scss/bootstrap';
 @import 'assets/variable.scss';
 
+a {
+  display: block;
+  text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
+}
+
 .heading-h1 {
   font-size: $font-size-h1;
   line-height: $line-height-h1;
@@ -105,7 +113,29 @@ header {
 body {
   background-color: $background-color;
 }
-
+.body-content {
+  transition: margin 0.3s ease-in-out;
+}
+.body-content.has-sidebar {
+  margin-left: 270px;
+  margin-right: 0;
+}
+.linkk-otr {
+  display: flex;
+  align-items: center;
+  gap: 0 8px;
+}
+.page-linkk {
+  &:not(:last-child) {
+    color: $black-color65;
+  }
+  &:last-child {
+    color: $black-color65;
+  }
+  a {
+    color: inherit;
+  }
+}
 @media (max-width: $small-screen) {
   body {
     background-color: $white-color;

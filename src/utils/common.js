@@ -1,5 +1,7 @@
+import React from 'react';
 import {startCase, forEach} from 'lodash';
 import {DASHBOARD_PATH} from 'constants/routePaths';
+import {useLocation} from 'react-router-dom';
 
 export const getBreadcrumbs = pathname => {
   const urlPath = pathname.split('/');
@@ -38,3 +40,10 @@ export const getAccessToken = () => {
 export const setAccessToken = accessToken => {
   return localStorage.setItem('access_token', accessToken);
 };
+export const setUserInfoInStorage = (userInfo = {}) => {
+  return localStorage.setItem('uuInfo', JSON.stringify(userInfo));
+};
+export function useQuery() {
+  const {search} = useLocation();
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}

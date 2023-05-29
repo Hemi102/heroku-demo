@@ -1,0 +1,69 @@
+@import '../../assets/variable.scss';
+
+.Login-main {
+  .logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    .title {
+      color: $action-primary;
+    }
+    .sub-title {
+      color: $gray-color4;
+      line-height: 18px !important;
+    }
+  }
+  .col-login-otr {
+    width: 558px;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    .col-login-inr {
+      width: 100%;
+      padding-bottom: 50px;
+      background-color: $white-color;
+      height: 100%;
+      .login-form {
+        box-shadow: 0px 16px 48px rgba(0, 0, 0, 0.04);
+        padding: 40px 48px 0 48px;
+        border-radius: 16px;
+        .title {
+          text-align: center;
+          color: $gray-color4;
+          margin: 0;
+        }
+        .sub-title {
+          text-align: center;
+          color: $gray-color4;
+          opacity: 0.6;
+        }
+      }
+      .remember-otr {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 24px 0;
+        .Forget-text {
+          color: $gray-color4;
+        }
+      }
+    }
+  }
+
+  @media (max-width: $small-screen) {
+    .login-form {
+      width: 100%;
+      height: 100%;
+      position: static;
+      padding: 40px 24px;
+      transform: translate(0, 0);
+    }
+  }
+}

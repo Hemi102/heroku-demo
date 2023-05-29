@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // axios.defaults.baseURL = "https://unstationary1.herokuapp.com/api";
-axios.defaults.baseURL = 'https://base-url.com';
+axios.defaults.baseURL = 'https://dummyjson.com';
 
 class GenericService {
   get = url =>

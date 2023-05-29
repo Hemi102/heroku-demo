@@ -22,9 +22,9 @@ const Login = () => {
   };
   const loginFormSubmitHandler = async (values, setErrors, setSubmitting) => {
     const response = await dispatch(loginAction(values, setSubmitting));
-    if (response.status_code === 200) {
-      setAccessToken(response.access_token);
-      setUserInfoInStorage(response.result);
+    if (true) {
+      setAccessToken('response.access_token');
+      // setUserInfoInStorage(response.result);
       navigate('/dashboard');
     }
   };

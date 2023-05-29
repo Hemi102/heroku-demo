@@ -15,6 +15,7 @@ export const loginAction = (data, setSubmitting) => async dispatch => {
     return response;
   } catch (error) {
     console.log(error);
+    dispatch({type: LOGIN_USER, payload: {}});
   } finally {
     dispatch({type: LOADING, payload: false});
     setSubmitting(false);

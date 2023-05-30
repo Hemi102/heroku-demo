@@ -1,0 +1,60 @@
+@import '../../assets/variable.scss';
+
+
+.table-responsive{
+  overflow-x: auto;
+}
+
+.table-rows {
+  background: #FFFFFF;
+  box-shadow: 0px 0.3em 0.3em rgba(0, 0, 0, 0.1) !important;
+}
+
+.table-rows th {
+  height: 65px;
+  vertical-align: middle;
+  border: 0px;
+  padding-left: 25px !important;
+  padding-right: 5px !important;
+  white-space: nowrap;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 28px;
+  color: #0A0A0A;
+}
+
+.table-rows tr {
+  border-top: 1px solid rgba(0, 70, 67, 0.15) !important;
+}
+
+.table-header tr{
+  border-top: none !important;
+}
+
+.table-rows td {
+  height: 81px;
+  vertical-align: middle;
+  border: 0px;
+  padding-left: 25px !important;
+  padding-right: 5px !important;
+  white-space: nowrap;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 28px;
+  color: #0A0A0A;
+  opacity: 0.65;
+}
+
+.success-status{
+  background: #DCFCE7;
+  padding: 4px 8px;
+  gap: 16px;
+  color: #22C55E;
+  text-align: center;
+}
+
+.form-check-input{
+  border-radius: 0% !important;
+}

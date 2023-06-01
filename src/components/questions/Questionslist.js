@@ -8,30 +8,35 @@ const Questionslist = () => {
     {
       text: 'What was the type of outreach?',
       type: 'Multiple Choice',
+      Status: 'Active',
       dateCreated: 'Apr 3, 2023',
       dateUpdated: 'Dec 10, 2023',
     },
     {
       text: 'What was the duration of outreach?',
       type: 'Dropdown',
+      Status: 'Active',
       dateCreated: 'Apr 3, 2023',
       dateUpdated: 'Dec 10, 2023',
     },
     {
       text: 'What was the type of outreach?',
       type: 'Multiple Choice',
+      Status: 'Active',
       dateCreated: 'Apr 3, 2023',
       dateUpdated: 'Dec 10, 2023',
     },
     {
       text: 'What was the type of outreach?',
       type: 'Multiple Choice',
+      Status: 'Active',
       dateCreated: 'Apr 3, 2023',
       dateUpdated: 'Dec 10, 2023',
     },
     {
       text: 'What was the type of outreach?',
       type: 'Multiple Choice',
+      Status: 'Active',
       dateCreated: 'Apr 3, 2023',
       dateUpdated: 'Dec 10, 2023',
     },
@@ -104,7 +109,7 @@ const Questionslist = () => {
                 <td>{checkbox.text}</td>
                 <td>{checkbox.type}</td>
                 <td>
-                  <div className="success-status">{checkbox.status}</div>
+                  <div className="success-status">{checkbox.Status}</div>
                 </td>
                 <td>{checkbox.dateCreated}</td>
                 <td>{checkbox.dateUpdated}</td>

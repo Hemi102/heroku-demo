@@ -4,7 +4,7 @@ import Questionslist from 'components/questions/Questionslist';
 const Questions = () => {
   return <>
   <div className='main-content'>
-    <h1>Questions</h1>
+    <h1 className='ms-2'>Questions</h1>
     <Actions />
     <Questionslist />
   </div>

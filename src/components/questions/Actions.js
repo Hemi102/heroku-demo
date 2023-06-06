@@ -1,6 +1,6 @@
 import React from 'react'
 import { Plus, UploadSimple, MagnifyingGlass } from 'phosphor-react';
-
+import Input from 'components/common/input';
 
 const Actions = () => {
   return (
@@ -9,10 +9,12 @@ const Actions = () => {
         <div className='col'>
           <div className='d-flex flex-wrap align-items-center justify-content-between'>
             <div className='d-flex mt-2'>
-              <span>
-                <MagnifyingGlass size={24} className='search-icon ms-3'/>
-              </span>
-              <input className='search-input flex-grow-1' type='search' placeholder='Search Questions'></input>
+              <Input 
+                 Icon={MagnifyingGlass}
+                className='' 
+                type='search' 
+                placeholder='Search Questions'>
+              </Input>
             </div>
             <div className='d-flex mt-2'>
               <button className='secendory-btn text-nowrap'>

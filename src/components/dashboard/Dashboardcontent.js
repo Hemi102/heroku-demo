@@ -228,43 +228,43 @@ const Dashboardcontent = () => {
                     <p className='opacity-50'>Question No.7 of 7</p>
                     <h4>What is the population of focus?</h4>
 
-                    <div className="progress w-lg-75 w-xl-75 w-xxl-75 w-100 d-flex justify-content-between">
+                    <div className="progress w-75 d-flex justify-content-between">
                       <div className="progress-bar" role="progressbar" style={{ width: '54%' }}>
                         <div className='ps-3'>Homeless</div>
                       </div>
                       <div className='progress-percent'>54%</div>
                     </div>
-                    <div className="progress w-lg-75 w-xl-75 w-xxl-75 w-100 d-flex justify-content-between mt-3">
+                    <div className="progress w-75 d-flex justify-content-between mt-3">
                       <div className="progress-bar" role="progressbar" style={{ width: '40%' }}>
                         <div className='ps-3'>High utilizers (Adults)</div>
                       </div>
                       <div className='progress-percent'>40%</div>
                     </div>
-                    <div className="progress w-lg-75 w-xl-75 w-xxl-75 w-100 d-flex justify-content-between mt-3">
+                    <div className="progress w-75 d-flex justify-content-between mt-3">
                       <div className="progress-bar" role="progressbar" style={{ width: '54%' }}>
                         <div className='ps-3'>SMI/Substance use disorder</div>
                       </div>
                       <div className='progress-percent'>54%</div>
                     </div>
-                    <div className="progress w-lg-75 w-xl-75 w-xxl-75 w-100 d-flex justify-content-between mt-3">
+                    <div className="progress w-75 d-flex justify-content-between mt-3">
                       <div className="progress-bar" role="progressbar" style={{ width: '40%' }}>
                         <div className='ps-3'>Nursing facility diversion?</div>
                       </div>
                       <div className='progress-percent'>40%</div>
                     </div>
-                    <div className="progress w-lg-75 w-xl-75 w-xxl-75 w-100 d-flex justify-content-between mt-3">
+                    <div className="progress w-75 d-flex justify-content-between mt-3">
                       <div className="progress-bar" role="progressbar" style={{ width: '30%' }}>
                         <div className='ps-3'>Nursing facility transition?</div>
                       </div>
                       <div className='progress-percent'>30%</div>
                     </div>
-                    <div className="progress w-lg-75 w-xl-75 w-xxl-75 w-100 d-flex justify-content-between mt-3">
+                    <div className="progress w-75 d-flex justify-content-between mt-3">
                       <div className="progress-bar" role="progressbar" style={{ width: '73%' }}>
                         <div className='ps-3'>Jail transition adults?</div>
                       </div>
                       <div className='progress-percent'>73%</div>
                     </div>
-                    <div className="progress w-lg-75 w-xl-75 w-xxl-75 w-100 d-flex justify-content-between mt-3">
+                    <div className="progress w-75 d-flex justify-content-between mt-3">
                       <div className="progress-bar" role="progressbar" style={{ width: '30%' }}>
                         <div className='ps-3'>Children and Youth?</div>
                       </div>

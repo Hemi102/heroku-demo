@@ -47,3 +47,11 @@ export function useQuery() {
   const {search} = useLocation();
   return React.useMemo(() => new URLSearchParams(search), [search]);
 }
+
+export const checkUserLoggedInStatus = loginData => {
+  if (loginData?.status_code === 200 || getAccessToken()) {
+    return true;
+  }
+
+  return false;
+};

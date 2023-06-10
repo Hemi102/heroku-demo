@@ -21,7 +21,7 @@ function Input({className, handleChange, type, name, value, placeholder, Icon, l
           <input
             onChange={handleChange}
             name={name}
-            className="theme-input input"
+            className="theme-input input w-100"
             value={value}
             type={type}
             placeholder={placeholder}

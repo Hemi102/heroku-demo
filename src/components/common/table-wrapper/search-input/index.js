@@ -5,18 +5,20 @@ import Input from 'components/common/input';
 const SearchInput = ({handleChange, value, placeholder}) => {
   return (
     <div className="search-input-otr">
-      <Input
-        Icon={MagnifyingGlass}
-        type="search"
-        name="search"
-        value={value}
-        onChange={e => {
-          e.preventDefault();
-          const value = e.target.value || '';
-          handleChange(value);
-        }}
-        placeholder={placeholder}
-      ></Input>
+      <div className="search-otr-wrapper">
+        <Input
+          Icon={MagnifyingGlass}
+          type="search"
+          name="search"
+          value={value}
+          onChange={e => {
+            e.preventDefault();
+            const value = e.target.value || '';
+            handleChange(value);
+          }}
+          placeholder={placeholder}
+        ></Input>
+      </div>
     </div>
   );
 };

@@ -1,4 +1,5 @@
 export const LOGIN_PATH = '/';
+export const RESET_PASSWORD_PATH = '/reset-password';
 export const DASHBOARD_PATH = '/dashboard';
 export const QUESTIONS_PATH = '/questions';
 export const Leadcaremanager_PATH = '/leadcaremanager';

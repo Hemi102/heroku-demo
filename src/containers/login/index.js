@@ -1,3 +1,4 @@
+import ForgotForm from 'components/login/ForgotForm';
 import LoginForm from 'components/login/LoginForm';
 import React, {useState, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
@@ -10,6 +11,7 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const query = useQuery();
+  const shouldResetPassword = query.get('reset');
   const [checked, setCheck] = useState(false);
 
   useEffect(() => {
@@ -22,9 +24,9 @@ const Login = () => {
   };
   const loginFormSubmitHandler = async (values, setErrors, setSubmitting) => {
     const response = await dispatch(loginAction(values, setSubmitting));
-    if (true) {
-      setAccessToken('response.access_token');
-      // setUserInfoInStorage(response.result);
+    if (response?.status_code === 200) {
+      setAccessToken(response.access_token);
+      setUserInfoInStorage(response.result);
       navigate('/dashboard');
     }
   };
@@ -36,11 +38,15 @@ const Login = () => {
       </div>
       <div className="col-login-otr">
         <div className="col-login-inr">
-          <LoginForm
-            checked={checked}
-            handleCheckChange={handleCheckChange}
-            formSubmitHandler={loginFormSubmitHandler}
-          />
+          {shouldResetPassword ? (
+            <ForgotForm />
+          ) : (
+            <LoginForm
+              checked={checked}
+              handleCheckChange={handleCheckChange}
+              formSubmitHandler={loginFormSubmitHandler}
+            />
+          )}
         </div>
       </div>
     </div>

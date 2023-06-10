@@ -10,6 +10,11 @@ a {
   }
 }
 
+.main-content {
+  width: 96%;
+  margin-left: 1.5rem;
+}
+
 .heading-h1 {
   font-size: $font-size-h1;
   line-height: $line-height-h1;
@@ -87,10 +92,63 @@ a {
   color: $gray-color4;
   background-color: $action-primary;
   border: 1px solid transparent;
-  padding: 12px 28px;
+  padding: 9.5px 24px;
   border-radius: 0px;
   transition: 0.3s;
   cursor: pointer;
+  white-space: nowrap;
+
+  &:not(:disabled) {
+    &:hover {
+      background-color: transparent;
+      border: 1px solid $action-primary;
+      color: $gray-color4;
+    }
+  }
+
+  &:disabled {
+    background: #adadad;
+  }
+}
+.secondary-btn {
+  font-size: $font-size-sm;
+  line-height: $line-height-sm;
+  font-family: 'Open Sans';
+  font-weight: 600;
+  color: $gray-color4;
+  background: rgba(10, 10, 10, 0.1);
+  border: 1px solid transparent;
+  padding: 9.5px 24px;
+  border-radius: 0px;
+  transition: 0.3s;
+  cursor: pointer;
+  white-space: nowrap;
+
+  &:not(:disabled) {
+    &:hover {
+      background-color: transparent;
+      border: 1px solid $action-primary;
+      color: $gray-color4;
+    }
+  }
+
+  &:disabled {
+    background: #adadad;
+  }
+}
+.danger-btn {
+  font-size: $font-size-sm;
+  line-height: $line-height-sm;
+  font-family: 'Open Sans';
+  font-weight: 600;
+  color: $white-color;
+  background: $action-danger;
+  border: 1px solid transparent;
+  padding: 9.5px 24px;
+  border-radius: 0px;
+  transition: 0.3s;
+  cursor: pointer;
+  white-space: nowrap;
 
   &:not(:disabled) {
     &:hover {
@@ -140,4 +198,9 @@ body {
   body {
     background-color: $white-color;
   }
+}
+
+.search-icon {
+  position: absolute;
+  margin-top: 1.2rem;
 }

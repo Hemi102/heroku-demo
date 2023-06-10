@@ -1,17 +1,16 @@
 import {Formik, ErrorMessage} from 'formik';
-import {validationSchema} from 'constants/login';
+import {resetPasswordSchema} from 'constants/login';
 import Check from 'components/common/check';
 import Input from 'components/common/input';
-import {Link} from 'react-router-dom';
 
-const LoginForm = ({checked, handleCheckChange, formSubmitHandler}) => (
+const ResetPassword = ({checked, handleCheckChange, formSubmitHandler}) => (
   <Formik
     initialValues={{
-      email: '',
       password: '',
+      password_confirmation: '',
     }}
     enableReinitialize={true}
-    validationSchema={validationSchema}
+    validationSchema={resetPasswordSchema}
     onSubmit={(values, {setErrors, setSubmitting}) => {
       formSubmitHandler(values, setErrors, setSubmitting);
     }}
@@ -20,34 +19,33 @@ const LoginForm = ({checked, handleCheckChange, formSubmitHandler}) => (
       return (
         <form className="login-form" onSubmit={formik.handleSubmit}>
           <div className="wrapper">
-            <h3 className="title heading-h6">Login to Dashboard</h3>
-            <p className="sub-title desc heading-sm mt-2">Please enter the details to login.</p>
+            <h3 className="title heading-h6">Reset your password</h3>
+            <p className="sub-title desc heading-sm mt-2">Enter your details below for setting a new password.</p>
           </div>
           <Input
             handleChange={formik.handleChange}
-            placeholder="Enter Email"
-            type="email"
-            label="Email"
-            value={formik.values.email}
-            name="email"
-            className="mb-1"
-          />
-          <ErrorMessage className="error-text" component="p" name="email" />
-          <Input
-            handleChange={formik.handleChange}
-            placeholder="Enter Password"
+            placeholder="Enter New Password"
             type="password"
-            label="Password"
+            label="New Password"
             value={formik.values.password}
             name="password"
             className="mb-1"
           />
           <ErrorMessage className="error-text" component="p" name="password" />
+          <Input
+            handleChange={formik.handleChange}
+            placeholder="Confirm Password"
+            type="password"
+            label="Confirm Password"
+            value={formik.values.password_confirmation}
+            name="password_confirmation"
+            className="mb-1"
+          />
+          <ErrorMessage className="error-text" component="p" name="password_confirmation" />
+
           <div className="remember-otr">
             <Check label={'Remember Me'} handleChange={handleCheckChange} value={checked} name="check" />
-            <Link to="/?reset=1" className="Forget-text heading-xs">
-              Forgot Password?{' '}
-            </Link>
+            <div className="Forget-text heading-xs">Forgot Password?</div>
           </div>
           <div className="action">
             <button type="submit" disabled={formik.isSubmitting} className="primary-btn w-100 mt-4">
@@ -57,7 +55,7 @@ const LoginForm = ({checked, handleCheckChange, formSubmitHandler}) => (
                   <span className="visually-hidden">Loading...</span>
                 </>
               ) : (
-                <span>Login</span>
+                <span>Update Password</span>
               )}
             </button>
           </div>
@@ -67,4 +65,4 @@ const LoginForm = ({checked, handleCheckChange, formSubmitHandler}) => (
   </Formik>
 );
 
-export default LoginForm;
+export default ResetPassword;

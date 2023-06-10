@@ -1,8 +1,10 @@
+import {useSelector} from 'react-redux';
 import AppRoutes from 'routes';
-import {getAccessToken} from 'utils/common';
+import {checkUserLoggedInStatus} from 'utils/common';
 
 function App() {
-  return <AppRoutes isLoggedIn={true} />;
+  const {loginData} = useSelector(state => state.login);
+  return <AppRoutes isLoggedIn={checkUserLoggedInStatus(loginData)} />;
 }
 
 export default App;

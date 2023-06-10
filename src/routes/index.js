@@ -1,6 +1,15 @@
 import Protected from 'routes/Protected';
 import {Route, Routes, BrowserRouter as Router} from 'react-router-dom';
-import {LOGIN_PATH, DASHBOARD_PATH, QUESTIONS_PATH, Leadcaremanager_PATH, OutreachLeaders_PATH, OutreachStaff_PATH, Members_PATH} from 'constants/routePaths';
+import {
+  LOGIN_PATH,
+  DASHBOARD_PATH,
+  QUESTIONS_PATH,
+  RESET_PASSWORD_PATH,
+  Leadcaremanager_PATH,
+  OutreachLeaders_PATH,
+  OutreachStaff_PATH,
+  Members_PATH,
+} from 'constants/routePaths';
 import Login from 'containers/login';
 import Dashboard from 'containers/dashboard';
 import Questions from 'containers/questions';
@@ -8,6 +17,7 @@ import Leadcaremanager from 'containers/leadcaremanager';
 import OutreachLeaders from 'containers/outreachleaders';
 import OutreachStaff from 'containers/outreachstaff';
 import Members from 'containers/members';
+import Reset from 'containers/reset-password';
 
 const AppRoutes = ({isLoggedIn}) => {
   return (
@@ -15,6 +25,7 @@ const AppRoutes = ({isLoggedIn}) => {
       <Routes>
         {/* Guest Routes */}
         <Route path={LOGIN_PATH} element={<Login />} />
+        <Route path={RESET_PASSWORD_PATH} element={<Reset />} />
 
         {/* Protected Routes */}
         <Route
@@ -45,7 +56,7 @@ const AppRoutes = ({isLoggedIn}) => {
           path={OutreachLeaders_PATH}
           element={
             <Protected isLoggedIn={isLoggedIn}>
-              <OutreachLeaders/>
+              <OutreachLeaders />
             </Protected>
           }
         />
@@ -53,7 +64,7 @@ const AppRoutes = ({isLoggedIn}) => {
           path={OutreachStaff_PATH}
           element={
             <Protected isLoggedIn={isLoggedIn}>
-              <OutreachStaff/>
+              <OutreachStaff />
             </Protected>
           }
         />
@@ -61,7 +72,7 @@ const AppRoutes = ({isLoggedIn}) => {
           path={Members_PATH}
           element={
             <Protected isLoggedIn={isLoggedIn}>
-              <Members/>
+              <Members />
             </Protected>
           }
         />

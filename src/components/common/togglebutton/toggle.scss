@@ -1,0 +1,47 @@
+@import '../../../assets/variable.scss';
+
+.toggle-main {
+  //   display: flex;
+  align-items: center;
+  gap: 0 12px;
+  padding: 0;
+  margin: 0;
+  position: relative;
+
+  .form-check-input {
+    width: 52px;
+    height: 28px;
+    margin: 0;
+    background-color: $black-color20;
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 8 8%27%3e%3ccircle r=%273%27 fill=%27%23fff%27/%3e%3c/svg%3e');
+    border: none;
+    border-radius: 2em !important;
+    &:focus {
+      border: none;
+      box-shadow: none;
+      background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 8 8%27%3e%3ccircle r=%273%27 fill=%27%23fff%27/%3e%3c/svg%3e');
+    }
+  }
+  .form-check-input:checked {
+    background-color: $action-primary;
+    background-position: right center !important;
+    background-image: url('data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%27-4 -4 8 8%27%3e%3ccircle r=%273%27 fill=%27%23fff%27/%3e%3c/svg%3e') !important;
+  }
+  .form-check-input::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translate(-50%, -50%);
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background-color: black; /* Change this to the desired background color of the toggle */
+    transition: transform 0.15s ease-in-out;
+  }
+
+  .form-check-input:checked::before {
+    background-color: black; /* Change this to the desired color of the toggle's moving circle */
+    transform: translate(50%, -50%);
+  }
+}

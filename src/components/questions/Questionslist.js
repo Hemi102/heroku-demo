@@ -7,43 +7,24 @@ import {debounce} from 'lodash';
 import CustomModal from 'components/common/modal';
 import AddQuestionForm from './add-question-form';
 
+const getQuestion = (question = '', questionType = 'Multiple Choice', options = [], status = false) => {
+  return {
+    question,
+    questionType,
+    dateCreated: 'Apr 3, 2023',
+    dateUpdated: 'Dec 10, 2023',
+    options: options,
+    status: status,
+  };
+};
 const Questionslist = () => {
   const questions = [
-    {
-      text: 'What was the type of outreach?',
-      type: 'Multiple Choice',
-      Status: 'Active',
-      dateCreated: 'Apr 3, 2023',
-      dateUpdated: 'Dec 10, 2023',
-    },
-    {
-      text: 'What was the duration of outreach?',
-      type: 'Dropdown',
-      Status: 'Active',
-      dateCreated: 'Apr 3, 2023',
-      dateUpdated: 'Dec 10, 2023',
-    },
-    {
-      text: 'What was the type of outreach?',
-      type: 'Multiple Choice',
-      Status: 'Active',
-      dateCreated: 'Apr 3, 2023',
-      dateUpdated: 'Dec 10, 2023',
-    },
-    {
-      text: 'What was the type of outreach?',
-      type: 'Multiple Choice',
-      Status: 'Active',
-      dateCreated: 'Apr 3, 2023',
-      dateUpdated: 'Dec 10, 2023',
-    },
-    {
-      text: 'What was the type of outreach?',
-      type: 'Multiple Choice',
-      Status: 'Active',
-      dateCreated: 'Apr 3, 2023',
-      dateUpdated: 'Dec 10, 2023',
-    },
+    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
+    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
+    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
+    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
+    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
+    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
   ];
 
   const [selectAll, setSelectAll] = useState(false);
@@ -53,6 +34,7 @@ const Questionslist = () => {
       checked: false,
     })),
   );
+  console.log('questions list ', questionsList);
   const [meta, setMeta] = useState(initialMetaForTable);
   const [loading, setLoading] = useState(true);
   const [selectedQuestions, setSelectedQuestions] = useState(0);
@@ -93,6 +75,13 @@ const Questionslist = () => {
   };
   const handleOpenQuestionModal = () => {
     setIsQuestionModalvisible(true);
+  };
+  const handleQuestionSubmittion = question => {
+    setQuestionsList(pre => [
+      ...pre,
+      getQuestion(question.question, question.questionType, question.options, question.status),
+    ]);
+    handleCloseQuestionModal();
   };
   useEffect(() => {
     setSelectedQuestions(
@@ -170,26 +159,26 @@ const Questionslist = () => {
                 </tr>
               </thead>
               <tbody>
-                {questionsList.map((checkbox, index) => (
+                {questionsList.map((question, index) => (
                   <tr key={index}>
                     <td>
                       <div className="form-check ps-3 mb-0">
                         <input
                           className="form-check-input"
-                          type="checkbox"
-                          checked={checkbox.checked}
+                          type="question"
+                          checked={question.checked}
                           onChange={() => handleCheckboxChange(index)}
                           value=""
                         />
                       </div>
                     </td>
-                    <td>{checkbox.text}</td>
-                    <td>{checkbox.type}</td>
+                    <td>{question.question}</td>
+                    <td>{question.questionType}</td>
                     <td>
-                      <div className="success-status">{checkbox.Status}</div>
+                      <div className="success-status">{question.status ? 'Active' : 'Inactive'}</div>
                     </td>
-                    <td>{checkbox.dateCreated}</td>
-                    <td>{checkbox.dateUpdated}</td>
+                    <td>{question.dateCreated}</td>
+                    <td>{question.dateUpdated}</td>
                     <td>
                       <Pencil size={24} className="opacity-50" />
                       <Trash size={24} className="ms-3 opacity-50" />
@@ -203,7 +192,7 @@ const Questionslist = () => {
       </TableWrapper>
       {isQuestionsModalVisible && (
         <CustomModal size="sm" show onHide={handleCloseQuestionModal} heading="Add Question">
-          <AddQuestionForm />
+          <AddQuestionForm handleQuestionSubmittion={handleQuestionSubmittion} handleClose={handleCloseQuestionModal} />
         </CustomModal>
       )}
     </>

@@ -1,8 +1,9 @@
 import Input from 'components/common/input';
 import SelectComponent from 'components/common/select';
 import {ErrorMessage, Formik} from 'formik';
-import {Trash} from 'phosphor-react';
+import {Plus, Trash} from 'phosphor-react';
 import React from 'react';
+import ToggleButton from 'components/common/togglebutton';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
@@ -27,13 +28,13 @@ const schema = yup.object().shape({
     }),
   status: yup.boolean().required(),
 });
-const AddQuestionForm = () => {
+const AddQuestionForm = ({handleQuestionSubmittion, handleClose}) => {
   return (
     <Formik
       initialValues={{question: '', questionType: '', options: [{option: '', answer: false}], status: true}}
       validationSchema={schema}
       onSubmit={values => {
-        console.log('submitted', values);
+        handleQuestionSubmittion(values);
       }}
     >
       {({handleChange, values, handleSubmit, setFieldValue, errors}) => {
@@ -68,12 +69,13 @@ const AddQuestionForm = () => {
                 <ErrorMessage component="p" name="questionType" />
               </div>
               <div>
-                <>
-                  {values.questionType &&
-                    values.options.map((item, index) => {
-                      return (
-                        <>
-                          <div className="d-flex align-items-center gap-2">
+                {values.questionType &&
+                  values.options.map((item, index) => {
+                    return (
+                      <>
+                        <p className="heading-xsb mt-4 mb-0">Add Option</p>
+                        <div className="d-flex align-items-center justify-content-between">
+                          <div className="d-flex align-items-center  gap-2 ">
                             <span>{`${index + 1}. `}</span>{' '}
                             <Input
                               value={item.option}
@@ -82,35 +84,44 @@ const AddQuestionForm = () => {
                               handleChange={handleChange}
                               name={`options[${index}].option`}
                             />
-                            <Trash
-                              size={24}
-                              onClick={() => {
-                                setFieldValue(
-                                  'options',
-                                  values.options.filter((_, itemIndex) => itemIndex !== index),
-                                );
-                              }}
-                            />
                           </div>
-                          <ErrorMessage component="p" name={`options[${index}].option`} />
-                        </>
-                      );
-                    })}
-                  {values.questionType && (
-                    <button
-                      type="butotn"
-                      onClick={() => {
-                        setFieldValue('options', [...values.options, {option: '', answer: false}]);
-                      }}
-                    >
-                      Add
-                    </button>
-                  )}
-                </>
+                          <Trash
+                            size={24}
+                            onClick={() => {
+                              setFieldValue(
+                                'options',
+                                values.options.filter((_, itemIndex) => itemIndex !== index),
+                              );
+                            }}
+                          />
+                        </div>
+                        <ErrorMessage component="p" name={`options[${index}].option`} />
+                      </>
+                    );
+                  })}
+                {values.questionType && (
+                  <button
+                    className="secondary-btn"
+                    type="butotn"
+                    onClick={() => {
+                      setFieldValue('options', [...values.options, {option: '', answer: false}]);
+                    }}
+                  >
+                    {<Plus size={18} className="me-3" />}Add Option
+                  </button>
+                )}
               </div>
+              <ToggleButton
+                label="Question Status"
+                handleChange={(name, value) => {
+                  setFieldValue(name, value);
+                }}
+                value={values.status}
+                name="status"
+              />
               <div className="action  gap-2">
                 <input className="primary-btn w-50" type="submit" name="submit" value="Submit" />
-                <button className="secondary-btn w-50" type="button" onClick={() => {}}>
+                <button className="secondary-btn w-50" type="button" onClick={handleClose}>
                   Cancel
                 </button>
               </div>

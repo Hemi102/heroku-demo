@@ -92,14 +92,23 @@
     opacity: 0.65;
   }
 
-  .success-status {
-    background: #dcfce7;
+  .status {
     padding: 4px 8px;
     gap: 16px;
-    color: #22c55e;
     text-align: center;
   }
-
+  
+  .status.active {
+    background: #DCFCE7;
+    color: #22c55e;
+  }
+  
+  .status.inactive {
+ 
+    background: #FEE2E2;
+    color: #EF4444;
+  }
+  
   .form-check-input {
     border-radius: 0% !important;
   }

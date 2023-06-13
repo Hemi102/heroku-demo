@@ -165,7 +165,7 @@ const Questionslist = () => {
                       <div className="form-check ps-3 mb-0">
                         <input
                           className="form-check-input"
-                          type="question"
+                          type="checkbox"
                           checked={question.checked}
                           onChange={() => handleCheckboxChange(index)}
                           value=""
@@ -175,7 +175,9 @@ const Questionslist = () => {
                     <td>{question.question}</td>
                     <td>{question.questionType}</td>
                     <td>
-                      <div className="success-status">{question.status ? 'Active' : 'Inactive'}</div>
+                      <div className={`status ${question.status ? 'active' : 'inactive'}`}>
+                        {question.status ? 'Active' : 'Inactive'}
+                      </div>
                     </td>
                     <td>{question.dateCreated}</td>
                     <td>{question.dateUpdated}</td>

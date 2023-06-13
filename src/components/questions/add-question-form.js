@@ -54,7 +54,7 @@ const AddQuestionForm = ({handleQuestionSubmittion, handleClose}) => {
                 />
                 <ErrorMessage component="p" name="question" />
               </div>
-              <div>
+              <div className='mb-2'>
                 <SelectComponent
                   options={[
                     {value: 'multiple-choice', label: 'Multiple Choice'},

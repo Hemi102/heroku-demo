@@ -1,7 +1,9 @@
 import Input from 'components/common/input';
 import { ErrorMessage, Formik } from 'formik';
+import { CaretDown } from 'phosphor-react';
 import React from 'react';
 import * as yup from 'yup';
+
 
 const schema = yup.object().shape({
   name: yup.string().required(),
@@ -48,24 +50,28 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
           <div className="question-modal">
             <form className="form-main" onSubmit={handleSubmit}>
               <div className="d-flex justify-content-between">
-                <Input
-                  handleChange={handleChange}
-                  placeholder="Name"
-                  type="text"
-                  label="Lead Care manager Name"
-                  value={values.leadCareManagerName}
-                  name="name"
-                />
-                <ErrorMessage component="p" name="name" />
-                <Input
-                  handleChange={handleChange}
-                  placeholder="Name"
-                  type="text"
-                  label="Care coordinator Name"
-                  value={values.careCoordinatorName}
-                  name="careCoordinatorName"
-                />
-                <ErrorMessage component="p" name="careCoordinatorName" />
+                <div>
+                  <Input
+                    handleChange={handleChange}
+                    placeholder="Name"
+                    type="text"
+                    label="Lead Care manager Name"
+                    value={values.name}
+                    name="name"
+                  />
+                  <ErrorMessage component="p" name="name" />
+                </div>
+                <div>
+                  <Input
+                    handleChange={handleChange}
+                    placeholder="Name"
+                    type="text"
+                    label="Care coordinator Name"
+                    value={values.careCoordinatorName}
+                    name="careCoordinatorName"
+                  />
+                  <ErrorMessage component="p" name="careCoordinatorName" />
+                </div>
               </div>
               <div>
                 <Input
@@ -90,18 +96,20 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                 <ErrorMessage component="p" name="location" />
               </div>
               <div>
-                <Input
-                  handleChange={customHandleChange}
-                  placeholder="Capacity Limit"
-                  type="text"
-                  label="Capacity Limit"
-                  value={values.capacitylimit !== '' ? `${values.capacitylimit}` : ''}
-                  name="capacitylimit"
-                />
+                <div className='input-wrapper'>
+                  <Input
+                    handleChange={customHandleChange}
+                    placeholder="Capacity Limit"
+                    type="text"
+                    label="Capacity Limit"
+                    value={values.capacitylimit !== '' ? `${values.capacitylimit}` : ''}
+                    name="capacitylimit"
+                  />
+                  <CaretDown className='caret-down-icon opacity-50'/>
+                </div>
 
                 <ErrorMessage component="p" name="capacitylimit" />
               </div>
-
               <div className="action gap-2">
                 <button className="secondary-btn w-50" type="button" onClick={handleClose}>
                   Cancel

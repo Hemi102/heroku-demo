@@ -46,7 +46,7 @@ const Questionslist = () => {
     }, DEBOUNCE_DELAY),
     [meta.search],
   );
-
+  console.log(loading);
   const handleSetSearchQuery = value => {
     setMeta(pre => ({...pre, search: value}));
     debounceFn();
@@ -94,7 +94,7 @@ const Questionslist = () => {
             } else return accumulator;
           }, 0),
     );
-  }, [questionsList]);
+  }, [questionsList, selectAll]);
 
   return (
     <>

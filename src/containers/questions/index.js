@@ -1,5 +1,5 @@
 import React from 'react';
-import Actions from 'components/questions/Actions';
+// import Actions from 'components/questions/Actions';
 import Questionslist from 'components/questions/Questionslist';
 const Questions = () => {
   return (

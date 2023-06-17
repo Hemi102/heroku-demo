@@ -1,7 +1,14 @@
 import React from 'react';
 
-import {DASHBOARD_PATH, QUESTIONS_PATH, Leadcaremanager_PATH, OutreachLeaders_PATH, OutreachStaff_PATH, Members_PATH} from 'constants/routePaths';
-import {List, House, Question, UserGear, User} from 'phosphor-react';
+import {
+  DASHBOARD_PATH,
+  QUESTIONS_PATH,
+  Leadcaremanager_PATH,
+  OutreachLeaders_PATH,
+  OutreachStaff_PATH,
+  Members_PATH,
+} from 'constants/routePaths';
+import {House, Question, UserGear, User} from 'phosphor-react';
 import {ReactComponent as MiniLogo} from 'assets/images/logo.svg';
 import MenuHideIcon from 'assets/images/contract-left-line.png';
 import './sidebar.scss';

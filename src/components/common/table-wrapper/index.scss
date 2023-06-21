@@ -102,7 +102,23 @@
     background: #DCFCE7;
     color: #22c55e;
   }
+
+  .status.pending{
+    background: #FEF9C3;
+    color: #EAB308;
+  }
   
+  .status.Enrolled {
+    background: #DCFCE7;
+    color: #22c55e;
+  }
+
+  .status.Excluded {
+ 
+    background: #FEE2E2;
+    color: #EF4444;
+  }
+
   .status.inactive {
  
     background: #FEE2E2;

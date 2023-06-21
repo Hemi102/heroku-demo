@@ -45,3 +45,55 @@
     opacity: 0.45;
   }
 }
+
+.mif-otr {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  align-items: flex-start;
+}
+
+.mif-otr label {
+  font-size: $font-size-xs;
+  line-height: $line-height-sm;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  color: $gray-color4;
+  opacity: 0.65;
+}
+
+.select-wrapper {
+  flex-grow: 1;
+}
+
+.mif-otr select{
+  width: 100%;
+  padding: 11px 28px;
+}
+
+
+.enrollment-otr  {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  align-items: flex-start;
+  justify-self: end;
+}
+
+.enrollment-otr  label {
+  font-size: $font-size-xs;
+  line-height: $line-height-sm;
+  font-family: 'Open Sans';
+  font-weight: 700;
+  color: $gray-color4;
+  opacity: 0.65;
+}
+
+.select-wrapper {
+  flex-grow: 1;
+}
+
+.enrollment-otr select{
+  width: 100%;
+  padding: 11px 28px;
+}

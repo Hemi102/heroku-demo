@@ -39,12 +39,12 @@ const Sidebar = () => {
         </NavLink>
         <NavLink to={OutreachLeaders_PATH}>
           <p className="menu-linkk">
-            <UserGear size={24} /> <span className="heading-smb">Outraech Leaders</span>
+            <UserGear size={24} /> <span className="heading-smb">Outreach Leaders</span>
           </p>
         </NavLink>
         <NavLink to={OutreachStaff_PATH}>
           <p className="menu-linkk">
-            <UserGear size={24} /> <span className="heading-smb">Outraech Staff</span>
+            <UserGear size={24} /> <span className="heading-smb">Outreach Staff</span>
           </p>
         </NavLink>
         <NavLink to={Members_PATH}>

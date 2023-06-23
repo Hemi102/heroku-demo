@@ -120,10 +120,10 @@ const AddQuestionForm = ({handleQuestionSubmittion, handleClose}) => {
                 name="status"
               />
               <div className="action  gap-2">
-                <input className="primary-btn w-50" type="submit" name="submit" value="Submit" />
                 <button className="secondary-btn w-50" type="button" onClick={handleClose}>
                   Cancel
                 </button>
+                <input className="primary-btn w-50" type="submit" name="submit" value="Submit" />
               </div>
             </form>
           </div>

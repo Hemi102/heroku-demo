@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ArrowRight, Plus, TrashSimple, UploadSimple} from 'phosphor-react';
 import TableWrapper from 'components/common/table-wrapper';
 import {DEBOUNCE_DELAY, initialMetaForTable} from 'constants/common';
@@ -13,10 +13,10 @@ const Member = () => {
       DateOfBirth: 'Dec 8, 1986',
       city: 'California',
       CIN: '837465',
-      MIF:'Lacare, May 2023',
-      Accounts:'3523',
-      MIFstatus:'active',
-      Enrollmentstatus:'Enrolled',
+      MIF: 'Lacare, May 2023',
+      Accounts: '3523',
+      MIFstatus: 'active',
+      Enrollmentstatus: 'Enrolled',
       checked: false,
     },
     {
@@ -24,10 +24,10 @@ const Member = () => {
       DateOfBirth: 'Dec 8, 1986',
       city: 'California',
       CIN: '837465',
-      MIF:'Lacare, May 2023',
-      Accounts:'3523',
-      MIFstatus:'inacive',
-      Enrollmentstatus:'Excluded',
+      MIF: 'Lacare, May 2023',
+      Accounts: '3523',
+      MIFstatus: 'inacive',
+      Enrollmentstatus: 'Excluded',
       checked: false,
     },
     {
@@ -35,43 +35,39 @@ const Member = () => {
       DateOfBirth: 'Dec 8, 1986',
       city: 'California',
       CIN: '837465',
-      MIF:'Lacare, May 2023',
-      Accounts:'3523',
-      MIFstatus:'active',
-      Enrollmentstatus:'pending',
+      MIF: 'Lacare, May 2023',
+      Accounts: '3523',
+      MIFstatus: 'active',
+      Enrollmentstatus: 'pending',
       checked: false,
-    }
-
+    },
   ]);
- 
-  
-  
 
   const [selectAll, setSelectAll] = useState(false);
   const [meta, setMeta] = useState(initialMetaForTable);
   const [loading, setLoading] = useState(true);
   const [selectedmembers, setSelectedmembers] = useState(0);
   const [ismemberModalVisible, setmemberIsModalVisible] = useState(false);
-
+  console.log(loading);
   const debounceFn = useCallback(
     debounce(() => {
       setLoading(true);
     }, DEBOUNCE_DELAY),
-    [meta.search]
+    [meta.search],
   );
 
-  const handleSetSearchQuery = (value) => {
-    setMeta((prevMeta) => ({ ...prevMeta, search: value }));
+  const handleSetSearchQuery = value => {
+    setMeta(prevMeta => ({...prevMeta, search: value}));
     debounceFn();
   };
 
-  const handlePageChange = (value) => {
-    setMeta((prevMeta) => ({ ...prevMeta, page: value }));
+  const handlePageChange = value => {
+    setMeta(prevMeta => ({...prevMeta, page: value}));
     setLoading(true);
   };
 
-  const handlememberSubmission = (member) => {
-    setmembersList((prevList) => [
+  const handlememberSubmission = member => {
+    setmembersList(prevList => [
       ...prevList,
       {
         name: member.name,
@@ -87,10 +83,9 @@ const Member = () => {
     ]);
     handleClosememberModal();
   };
-  
 
   const handleSelectAll = () => {
-    const updatedCheckboxes = membersList.map((checkbox) => ({
+    const updatedCheckboxes = membersList.map(checkbox => ({
       ...checkbox,
       checked: !selectAll,
     }));
@@ -98,22 +93,19 @@ const Member = () => {
     setSelectAll(!selectAll);
   };
 
-  const handleCheckboxChange = (index) => {
-    setmembersList((prevList) =>
-      prevList.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, checked: !item.checked } : item
-      )
+  const handleCheckboxChange = index => {
+    setmembersList(prevList =>
+      prevList.map((item, itemIndex) => (itemIndex === index ? {...item, checked: !item.checked} : item)),
     );
   };
 
   const handleClosememberModal = () => {
     setmemberIsModalVisible(false);
   };
-  
+
   const handleOpenmemberModal = () => {
     setmemberIsModalVisible(true);
   };
-  
 
   useEffect(() => {
     setSelectedmembers(
@@ -123,7 +115,7 @@ const Member = () => {
             if (item.checked) {
               return accumulator + 1;
             } else return accumulator;
-          }, 0)
+          }, 0),
     );
   }, [membersList, selectAll]);
 
@@ -145,9 +137,7 @@ const Member = () => {
                   label: `Delete ${selectedmembers} Items`,
                   classes: 'danger-btn',
                   icon: <TrashSimple size={24} className="me-3" />,
-                  handleClick: () => {
-                   
-                  },
+                  handleClick: () => {},
                 },
               ]
             : [
@@ -155,9 +145,7 @@ const Member = () => {
                   label: 'Upload File',
                   classes: 'secondary-btn',
                   icon: <UploadSimple size={24} className="me-3" />,
-                  handleClick: () => {
-               
-                  },
+                  handleClick: () => {},
                 },
                 {
                   label: 'Add Members',
@@ -165,7 +153,7 @@ const Member = () => {
                   icon: <Plus size={24} className="me-3" />,
                   handleClick: () => {
                     console.log('clicked');
-                    
+
                     handleOpenmemberModal();
                   },
                 },
@@ -211,9 +199,7 @@ const Member = () => {
                         />
                       </div>
                     </td>
-                    <td>
-                      {member.name}
-                    </td>
+                    <td>{member.name}</td>
                     <td>{member.DateOfBirth}</td>
                     <td>{member.city}</td>
                     <td>{member.CIN}</td>
@@ -225,16 +211,24 @@ const Member = () => {
                       </div>
                     </td>
                     <td>
-                      <div className={`status ${member.Enrollmentstatus === 'Enrolled' ? 'Enrolled' : (member.Enrollmentstatus === 'Excluded' ? 'Excluded' : 'pending')}`}>
+                      <div
+                        className={`status ${
+                          member.Enrollmentstatus === 'Enrolled'
+                            ? 'Enrolled'
+                            : member.Enrollmentstatus === 'Excluded'
+                            ? 'Excluded'
+                            : 'pending'
+                        }`}
+                      >
                         {member.Enrollmentstatus}
                       </div>
                     </td>
 
-
                     <td>
-                     <button className='secondary-btn'>start survey 
-                     <ArrowRight size={20} />
-                     </button>
+                      <button className="secondary-btn">
+                        start survey
+                        <ArrowRight size={20} />
+                      </button>
                     </td>
                   </tr>
                 ))}

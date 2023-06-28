@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Pencil, Trash, Plus, TrashSimple, UploadSimple} from 'phosphor-react';
 import TableWrapper from 'components/common/table-wrapper';
 import {DEBOUNCE_DELAY, initialMetaForTable} from 'constants/common';
@@ -11,71 +11,66 @@ const Outreachleader = () => {
     {
       name: 'James Jhones',
       Email: 'jhones@gmail.com',
-      Username:'James',
-      Lastlogin:'May 27, 2023, 15:42 GMT',
-      Datecreated:'Dec 10, 2023'
+      Username: 'James',
+      Lastlogin: 'May 27, 2023, 15:42 GMT',
+      Datecreated: 'Dec 10, 2023',
     },
     {
       name: 'James Jhones',
       Email: 'jhones@gmail.com',
-      Username:'James',
-      Lastlogin:'May 27, 2023, 15:42 GMT',
-      Datecreated:'Dec 10, 2023'
+      Username: 'James',
+      Lastlogin: 'May 27, 2023, 15:42 GMT',
+      Datecreated: 'Dec 10, 2023',
     },
     {
       name: 'James Jhones',
       Email: 'jhones@gmail.com',
-      Username:'James',
-      Lastlogin:'May 27, 2023, 15:42 GMT',
-      Datecreated:'Dec 10, 2023'
+      Username: 'James',
+      Lastlogin: 'May 27, 2023, 15:42 GMT',
+      Datecreated: 'Dec 10, 2023',
     },
-
   ]);
- 
-  
-  
 
   const [selectAll, setSelectAll] = useState(false);
   const [meta, setMeta] = useState(initialMetaForTable);
   const [loading, setLoading] = useState(true);
   const [selectedoutreachleader, setSelectedoutreachleader] = useState(0);
   const [isoutreachleaderModalVisible, setoutreachleaderIsModalVisible] = useState(false);
-
+  console.log(loading);
   const debounceFn = useCallback(
     debounce(() => {
       setLoading(true);
     }, DEBOUNCE_DELAY),
-    [meta.search]
+    [meta.search],
   );
 
-  const handleSetSearchQuery = (value) => {
-    setMeta((prevMeta) => ({ ...prevMeta, search: value }));
+  const handleSetSearchQuery = value => {
+    setMeta(prevMeta => ({...prevMeta, search: value}));
     debounceFn();
   };
 
-  const handlePageChange = (value) => {
-    setMeta((prevMeta) => ({ ...prevMeta, page: value }));
+  const handlePageChange = value => {
+    setMeta(prevMeta => ({...prevMeta, page: value}));
     setLoading(true);
   };
 
-  const handleoutreachleaderSubmission = (outreachleader) => {
-    setoutreachleaderList((prevList) => [
+  const handleoutreachleaderSubmission = outreachleader => {
+    setoutreachleaderList(prevList => [
       ...prevList,
       {
         name: outreachleader.name,
         Email: outreachleader.email,
         Username: outreachleader.Username,
-        Lastlogin:outreachleader.Lastlogin,
+        Lastlogin: outreachleader.Lastlogin,
         Datecreated: outreachleader.Datecreated,
         checked: false,
       },
     ]);
     handleCloseoutreachleaderModal();
   };
-  
 
   const handleSelectAll = () => {
-    const updatedCheckboxes = outreachleaderList.map((checkbox) => ({
+    const updatedCheckboxes = outreachleaderList.map(checkbox => ({
       ...checkbox,
       checked: !selectAll,
     }));
@@ -83,22 +78,19 @@ const Outreachleader = () => {
     setSelectAll(!selectAll);
   };
 
-  const handleCheckboxChange = (index) => {
-    setoutreachleaderList((prevList) =>
-      prevList.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, checked: !item.checked } : item
-      )
+  const handleCheckboxChange = index => {
+    setoutreachleaderList(prevList =>
+      prevList.map((item, itemIndex) => (itemIndex === index ? {...item, checked: !item.checked} : item)),
     );
   };
 
   const handleCloseoutreachleaderModal = () => {
     setoutreachleaderIsModalVisible(false);
   };
-  
+
   const handleOpenmemberModal = () => {
     setoutreachleaderIsModalVisible(true);
   };
-  
 
   useEffect(() => {
     setSelectedoutreachleader(
@@ -108,7 +100,7 @@ const Outreachleader = () => {
             if (item.checked) {
               return accumulator + 1;
             } else return accumulator;
-          }, 0)
+          }, 0),
     );
   }, [outreachleaderList, selectAll]);
 
@@ -130,9 +122,7 @@ const Outreachleader = () => {
                   label: `Delete ${selectedoutreachleader} Items`,
                   classes: 'danger-btn',
                   icon: <TrashSimple size={24} className="me-3" />,
-                  handleClick: () => {
-                   
-                  },
+                  handleClick: () => {},
                 },
               ]
             : [
@@ -140,9 +130,7 @@ const Outreachleader = () => {
                   label: 'Upload File',
                   classes: 'secondary-btn',
                   icon: <UploadSimple size={24} className="me-3" />,
-                  handleClick: () => {
-               
-                  },
+                  handleClick: () => {},
                 },
                 {
                   label: 'Add Outreachleader',
@@ -150,7 +138,7 @@ const Outreachleader = () => {
                   icon: <Plus size={24} className="me-3" />,
                   handleClick: () => {
                     console.log('clicked');
-                    
+
                     handleOpenmemberModal();
                   },
                 },
@@ -193,9 +181,7 @@ const Outreachleader = () => {
                         />
                       </div>
                     </td>
-                    <td>
-                      {outreachleader.name}
-                    </td>
+                    <td>{outreachleader.name}</td>
                     <td>{outreachleader.Email}</td>
                     <td>{outreachleader.Username}</td>
                     <td>{outreachleader.Lastlogin}</td>
@@ -213,7 +199,10 @@ const Outreachleader = () => {
       </TableWrapper>
       {isoutreachleaderModalVisible && (
         <CustomModal size="sm" show onHide={handleCloseoutreachleaderModal} heading="Add Question">
-          <Addoutreachleaderform handleQuestionSubmittion={handleoutreachleaderSubmission} handleClose={handleCloseoutreachleaderModal} />
+          <Addoutreachleaderform
+            handleQuestionSubmittion={handleoutreachleaderSubmission}
+            handleClose={handleCloseoutreachleaderModal}
+          />
         </CustomModal>
       )}
     </>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Pencil, Plus, Trash, TrashSimple, UploadSimple} from 'phosphor-react';
 import TableWrapper from 'components/common/table-wrapper';
 import {DEBOUNCE_DELAY, initialMetaForTable} from 'constants/common';
@@ -31,42 +31,40 @@ const Leadcaremanagers = () => {
       capacitylimit: '5/49',
       dateCreated: 'Apr 3, 2023',
       checked: false,
-    }
-
+    },
   ]);
- 
-   const MAX_CAPACITY=49;
-  
+
+  const MAX_CAPACITY = 49;
 
   const [selectAll, setSelectAll] = useState(false);
   const [meta, setMeta] = useState(initialMetaForTable);
   const [loading, setLoading] = useState(true);
   const [selectedManagers, setSelectedManagers] = useState(0);
   const [isManagerModalVisible, setIsManagerModalVisible] = useState(false);
-
+  console.log(loading);
   const debounceFn = useCallback(
     debounce(() => {
       setLoading(true);
     }, DEBOUNCE_DELAY),
-    [meta.search]
+    [meta.search],
   );
 
-  const handleSetSearchQuery = (value) => {
-    setMeta((prevMeta) => ({ ...prevMeta, search: value }));
+  const handleSetSearchQuery = value => {
+    setMeta(prevMeta => ({...prevMeta, search: value}));
     debounceFn();
   };
 
-  const handlePageChange = (value) => {
-    setMeta((prevMeta) => ({ ...prevMeta, page: value }));
+  const handlePageChange = value => {
+    setMeta(prevMeta => ({...prevMeta, page: value}));
     setLoading(true);
   };
 
-  const handleManagerSubmission = (manager) => {
-    setManagersList((prevList) => [
+  const handleManagerSubmission = manager => {
+    setManagersList(prevList => [
       ...prevList,
       {
         name: manager.name,
-        careCoordinatorName: manager.careCoordinatorName, 
+        careCoordinatorName: manager.careCoordinatorName,
         email: manager.email,
         location: manager.location,
         capacitylimit: `${manager.capacitylimit}/${MAX_CAPACITY}`,
@@ -78,7 +76,7 @@ const Leadcaremanagers = () => {
   };
 
   const handleSelectAll = () => {
-    const updatedCheckboxes = managersList.map((checkbox) => ({
+    const updatedCheckboxes = managersList.map(checkbox => ({
       ...checkbox,
       checked: !selectAll,
     }));
@@ -86,11 +84,9 @@ const Leadcaremanagers = () => {
     setSelectAll(!selectAll);
   };
 
-  const handleCheckboxChange = (index) => {
-    setManagersList((prevList) =>
-      prevList.map((item, itemIndex) =>
-        itemIndex === index ? { ...item, checked: !item.checked } : item
-      )
+  const handleCheckboxChange = index => {
+    setManagersList(prevList =>
+      prevList.map((item, itemIndex) => (itemIndex === index ? {...item, checked: !item.checked} : item)),
     );
   };
 
@@ -100,7 +96,6 @@ const Leadcaremanagers = () => {
   const handleOpenManagerModal = () => {
     setIsManagerModalVisible(true);
   };
-  
 
   useEffect(() => {
     setSelectedManagers(
@@ -110,7 +105,7 @@ const Leadcaremanagers = () => {
             if (item.checked) {
               return accumulator + 1;
             } else return accumulator;
-          }, 0)
+          }, 0),
     );
   }, [managersList, selectAll]);
 
@@ -132,9 +127,7 @@ const Leadcaremanagers = () => {
                   label: `Delete ${selectedManagers} Items`,
                   classes: 'danger-btn',
                   icon: <TrashSimple size={24} className="me-3" />,
-                  handleClick: () => {
-                   
-                  },
+                  handleClick: () => {},
                 },
               ]
             : [
@@ -142,9 +135,7 @@ const Leadcaremanagers = () => {
                   label: 'Upload File',
                   classes: 'secondary-btn',
                   icon: <UploadSimple size={24} className="me-3" />,
-                  handleClick: () => {
-               
-                  },
+                  handleClick: () => {},
                 },
                 {
                   label: 'Add Lead Care Manager',
@@ -152,7 +143,7 @@ const Leadcaremanagers = () => {
                   icon: <Plus size={24} className="me-3" />,
                   handleClick: () => {
                     console.log('clicked');
-                    
+
                     handleOpenManagerModal();
                   },
                 },
@@ -202,7 +193,7 @@ const Leadcaremanagers = () => {
                     <td>{manager.location}</td>
                     <td>{`${manager.capacitylimit}`}</td>
                     <td>{manager.dateCreated}</td>
-           
+
                     <td>
                       <Pencil size={24} className="opacity-50" />
                       <Trash size={24} className="ms-3 opacity-50" />

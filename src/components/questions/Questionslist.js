@@ -19,6 +19,7 @@ const Questionslist = () => {
   const [isQuestionsModalVisible, setIsQuestionModalvisible] = useState(false);
   const [currentQuestionEdit, setCurrentQuestionEdit] = useState('');
   const [refreshPage, setRefreshPage] = useState(false);
+  console.log(loading);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceFn = useCallback(
     debounce(() => {

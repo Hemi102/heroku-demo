@@ -42,6 +42,7 @@ const Leadcaremanagers = () => {
   const [selectedManagers, setSelectedManagers] = useState(0);
   const [isManagerModalVisible, setIsManagerModalVisible] = useState(false);
   console.log(loading);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceFn = useCallback(
     debounce(() => {
       setLoading(true);

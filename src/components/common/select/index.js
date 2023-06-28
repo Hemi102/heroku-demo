@@ -81,7 +81,6 @@ function SelectComponent({options, selectedValue, handleChange, placeholder, ...
   } else {
     value = options.find(item => item.value === selectedValue) || '';
   }
-
   return (
     <div className="select">
       <Select

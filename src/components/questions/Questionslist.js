@@ -5,40 +5,20 @@ import TableWrapper from 'components/common/table-wrapper';
 import {DEBOUNCE_DELAY, initialMetaForTable} from 'constants/common';
 import {debounce} from 'lodash';
 import CustomModal from 'components/common/modal';
-import AddQuestionForm from './add-question-form';
+import QuestionForm from './question-form';
+import {createQuestion, deleteQuestion, getQuestions, updateQuestions} from 'containers/questions/api';
+import moment from 'moment';
 
-const getQuestion = (question = '', questionType = 'Multiple Choice', options = [], status = false) => {
-  return {
-    question,
-    questionType,
-    dateCreated: 'Apr 3, 2023',
-    dateUpdated: 'Dec 10, 2023',
-    options: options,
-    status: status,
-  };
-};
 const Questionslist = () => {
-  const questions = [
-    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
-    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
-    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
-    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
-    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
-    getQuestion('What was the type of outreach?', 'Multiple Choice', [{option: '', answer: false}], false),
-  ];
-
+  const [totalCount, setTotalCount] = useState(0);
   const [selectAll, setSelectAll] = useState(false);
-  const [questionsList, setQuestionsList] = useState(
-    questions.map(question => ({
-      ...question,
-      checked: false,
-    })),
-  );
-  console.log('questions list ', questionsList);
+  const [questionsList, setQuestionsList] = useState([]);
   const [meta, setMeta] = useState(initialMetaForTable);
   const [loading, setLoading] = useState(true);
   const [selectedQuestions, setSelectedQuestions] = useState(0);
   const [isQuestionsModalVisible, setIsQuestionModalvisible] = useState(false);
+  const [currentQuestionEdit, setCurrentQuestionEdit] = useState('');
+  const [refreshPage, setRefreshPage] = useState(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceFn = useCallback(
     debounce(() => {
@@ -46,7 +26,6 @@ const Questionslist = () => {
     }, DEBOUNCE_DELAY),
     [meta.search],
   );
-  console.log(loading);
   const handleSetSearchQuery = value => {
     setMeta(pre => ({...pre, search: value}));
     debounceFn();
@@ -55,6 +34,9 @@ const Questionslist = () => {
   const handlePageChange = value => {
     setMeta(pre => ({...pre, page: value}));
     setLoading(true);
+  };
+  const handleRefreshPage = () => {
+    setRefreshPage(pre => !pre);
   };
   const handleSelectAll = () => {
     const updatedCheckboxes = questionsList.map(checkbox => ({
@@ -72,24 +54,54 @@ const Questionslist = () => {
   };
   const handleCloseQuestionModal = () => {
     setIsQuestionModalvisible(false);
+    setCurrentQuestionEdit('');
   };
   const handleOpenQuestionModal = () => {
     setIsQuestionModalvisible(true);
   };
-  const handleQuestionSubmittion = question => {
-    setQuestionsList(pre => [
-      ...pre,
-      getQuestion(question.question, question.questionType, question.options, question.status),
-    ]);
-    handleCloseQuestionModal();
+  const handleQuestionSubmittion = async question => {
+    try {
+      if (typeof currentQuestionEdit === 'object') {
+        const {id} = question;
+        const result = await updateQuestions(question, id);
+        if (result) {
+          handleCloseQuestionModal();
+          handleRefreshPage();
+        }
+      } else {
+        const result = await createQuestion(question);
+        if (result) {
+          handleCloseQuestionModal();
+          handleRefreshPage();
+        }
+      }
+    } catch (error) {}
   };
+  const handleDeleteQuestion = async id => {
+    const result = await deleteQuestion(id);
+    if (result) handleRefreshPage();
+  };
+  const fetchQuestions = useCallback(async () => {
+    const result = await getQuestions();
+
+    if (result['questions']) {
+      const data = result?.questions.map(item => ({...item, checked: selectAll}));
+      setQuestionsList(data);
+      setTotalCount(result?.meta.total_count);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshPage]);
+
+  useEffect(() => {
+    fetchQuestions();
+  }, [fetchQuestions]);
   useEffect(() => {
     setSelectedQuestions(
       selectAll
         ? questionsList.length
         : questionsList.reduce((accumulator, item) => {
             if (item.checked) {
-              console.log('checked');
               return accumulator + 1;
             } else return accumulator;
           }, 0),
@@ -102,7 +114,7 @@ const Questionslist = () => {
         searchPlaceholder="Search Questions"
         setSearhQuery={handleSetSearchQuery}
         searchValue={meta.search}
-        totalListCount={100}
+        totalListCount={totalCount}
         pageSize={meta.perPage}
         currentPage={meta.page}
         onPageChange={handlePageChange}
@@ -129,7 +141,6 @@ const Questionslist = () => {
                   classes: 'primary-btn',
                   icon: <Plus size={24} className="me-3" />,
                   handleClick: () => {
-                    console.log('clicked');
                     handleOpenQuestionModal();
                   },
                 },
@@ -167,23 +178,38 @@ const Questionslist = () => {
                           className="form-check-input"
                           type="checkbox"
                           checked={question.checked}
-                          onChange={() => handleCheckboxChange(index)}
+                          onChange={event => handleCheckboxChange(index, event)}
                           value=""
                         />
                       </div>
                     </td>
-                    <td>{question.question}</td>
-                    <td>{question.questionType}</td>
+                    <td>{question.description}</td>
+                    <td>{question.question_type}</td>
                     <td>
                       <div className={`status ${question.status ? 'active' : 'inactive'}`}>
                         {question.status ? 'Active' : 'Inactive'}
                       </div>
                     </td>
-                    <td>{question.dateCreated}</td>
-                    <td>{question.dateUpdated}</td>
+                    <td>{moment(question.created_at).format('YYYY-MM-DD')}</td>
+                    <td>{moment(question.updated_at).format('YYYY-MM-DD')}</td>
                     <td>
-                      <Pencil size={24} className="opacity-50" />
-                      <Trash size={24} className="ms-3 opacity-50" />
+                      <Pencil
+                        size={24}
+                        className="opacity-50"
+                        onClick={() => {
+                          setCurrentQuestionEdit(question);
+                          handleOpenQuestionModal();
+                        }}
+                        style={{cursor: 'pointer'}}
+                      />
+                      <Trash
+                        size={24}
+                        className="ms-3 opacity-50"
+                        style={{cursor: 'pointer'}}
+                        onClick={() => {
+                          question?.id && handleDeleteQuestion(question.id);
+                        }}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -193,8 +219,17 @@ const Questionslist = () => {
         </div>
       </TableWrapper>
       {isQuestionsModalVisible && (
-        <CustomModal size="sm" show onHide={handleCloseQuestionModal} heading="Add Question">
-          <AddQuestionForm handleQuestionSubmittion={handleQuestionSubmittion} handleClose={handleCloseQuestionModal} />
+        <CustomModal
+          size="sm"
+          show
+          onHide={handleCloseQuestionModal}
+          heading={`${currentQuestionEdit ? 'Edit' : 'Add'} Question`}
+        >
+          <QuestionForm
+            handleQuestionSubmittion={handleQuestionSubmittion}
+            handleClose={handleCloseQuestionModal}
+            currentQuestionEdit={currentQuestionEdit}
+          />
         </CustomModal>
       )}
     </>

@@ -3,12 +3,11 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Pencil, Plus, Trash, TrashSimple, UploadSimple} from 'phosphor-react';
 import TableWrapper from 'components/common/table-wrapper';
 import {DEBOUNCE_DELAY, initialMetaForTable} from 'constants/common';
-import {debounce} from 'lodash';
 import CustomModal from 'components/common/modal';
 import QuestionForm from './question-form';
 import {createQuestion, deleteQuestion, getQuestions, updateQuestions} from 'containers/questions/api';
 import moment from 'moment';
-
+let timeout;
 const Questionslist = () => {
   const [totalCount, setTotalCount] = useState(0);
   const [selectAll, setSelectAll] = useState(false);
@@ -21,20 +20,18 @@ const Questionslist = () => {
   const [refreshPage, setRefreshPage] = useState(false);
   console.log(loading);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFn = useCallback(
-    debounce(() => {
-      setLoading(true);
-    }, DEBOUNCE_DELAY),
-    [meta.search],
-  );
+  const debounceFn = (callback, delay) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(callback, delay);
+  };
   const handleSetSearchQuery = value => {
     setMeta(pre => ({...pre, search: value}));
-    debounceFn();
+    debounceFn(handleRefreshPage, DEBOUNCE_DELAY);
   };
 
   const handlePageChange = value => {
     setMeta(pre => ({...pre, page: value}));
-    setLoading(true);
+    handleRefreshPage();
   };
   const handleRefreshPage = () => {
     setRefreshPage(pre => !pre);
@@ -83,7 +80,7 @@ const Questionslist = () => {
     if (result) handleRefreshPage();
   };
   const fetchQuestions = useCallback(async () => {
-    const result = await getQuestions();
+    const result = await getQuestions(meta);
 
     if (result['questions']) {
       const data = result?.questions.map(item => ({...item, checked: selectAll}));

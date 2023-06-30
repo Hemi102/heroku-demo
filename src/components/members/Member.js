@@ -2,87 +2,48 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {ArrowRight, Plus, TrashSimple, UploadSimple} from 'phosphor-react';
 import TableWrapper from 'components/common/table-wrapper';
 import {DEBOUNCE_DELAY, initialMetaForTable} from 'constants/common';
-import {debounce} from 'lodash';
 import CustomModal from 'components/common/modal';
 import Addmemberform from './Addmemberform';
+import {createMember, getMembers} from 'containers/members/api';
+let timeout;
 
 const Member = () => {
-  const [membersList, setmembersList] = useState([
-    {
-      name: 'James Jhones',
-      DateOfBirth: 'Dec 8, 1986',
-      city: 'California',
-      CIN: '837465',
-      MIF: 'Lacare, May 2023',
-      Accounts: '3523',
-      MIFstatus: 'active',
-      Enrollmentstatus: 'Enrolled',
-      checked: false,
-    },
-    {
-      name: 'James Jhones',
-      DateOfBirth: 'Dec 8, 1986',
-      city: 'California',
-      CIN: '837465',
-      MIF: 'Lacare, May 2023',
-      Accounts: '3523',
-      MIFstatus: 'inacive',
-      Enrollmentstatus: 'Excluded',
-      checked: false,
-    },
-    {
-      name: 'James Jhones',
-      DateOfBirth: 'Dec 8, 1986',
-      city: 'California',
-      CIN: '837465',
-      MIF: 'Lacare, May 2023',
-      Accounts: '3523',
-      MIFstatus: 'active',
-      Enrollmentstatus: 'pending',
-      checked: false,
-    },
-  ]);
-
+  const [membersList, setmembersList] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [selectAll, setSelectAll] = useState(false);
   const [meta, setMeta] = useState(initialMetaForTable);
   const [loading, setLoading] = useState(true);
   const [selectedmembers, setSelectedmembers] = useState(0);
   const [ismemberModalVisible, setmemberIsModalVisible] = useState(false);
+  const [refreshPage, setRefreshPage] = useState(false);
   console.log(loading);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFn = useCallback(
-    debounce(() => {
-      setLoading(true);
-    }, DEBOUNCE_DELAY),
-    [meta.search],
-  );
-
+  const debounceFn = (callback, delay) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(callback, delay);
+  };
   const handleSetSearchQuery = value => {
-    setMeta(prevMeta => ({...prevMeta, search: value}));
-    debounceFn();
+    setMeta(pre => ({...pre, search: value}));
+    debounceFn(handleRefreshPage, DEBOUNCE_DELAY);
   };
-
   const handlePageChange = value => {
-    setMeta(prevMeta => ({...prevMeta, page: value}));
-    setLoading(true);
+    setMeta(pre => ({...pre, page: value}));
+    handleRefreshPage();
+  };
+  const handleRefreshPage = () => {
+    setRefreshPage(pre => !pre);
   };
 
-  const handlememberSubmission = member => {
-    setmembersList(prevList => [
-      ...prevList,
-      {
-        name: member.name,
-        DateOfBirth: member.DateOfBirth,
-        city: member.city,
-        CIN: member.CIN,
-        MIF: member.MIF,
-        Accounts: member.Accounts,
-        MIFstatus: member.MIFstatus,
-        Enrollmentstatus: member.Enrollmentstatus,
-        checked: false,
-      },
-    ]);
-    handleClosememberModal();
+  const handlememberSubmission = async member => {
+    try {
+      const result = await createMember(member);
+      if (result) {
+        handleClosememberModal();
+        handleRefreshPage();
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleSelectAll = () => {
@@ -107,6 +68,28 @@ const Member = () => {
   const handleOpenmemberModal = () => {
     setmemberIsModalVisible(true);
   };
+  const fetchMembers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const result = await getMembers(meta);
+      console.log('memebers', result);
+      if (result['members']) {
+        const data = result?.members.map(item => ({...item, checked: selectAll}));
+        setmembersList(data);
+        setTotalCount(result?.meta.total_count);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshPage]);
+
+  useEffect(() => {
+    fetchMembers();
+  }, [fetchMembers]);
 
   useEffect(() => {
     setSelectedmembers(
@@ -126,7 +109,7 @@ const Member = () => {
         searchPlaceholder="Search Lead Care Managers"
         setSearhQuery={handleSetSearchQuery}
         searchValue={meta.search}
-        totalListCount={100}
+        totalListCount={totalCount}
         pageSize={meta.perPage}
         currentPage={meta.page}
         onPageChange={handlePageChange}
@@ -201,27 +184,27 @@ const Member = () => {
                       </div>
                     </td>
                     <td>{member.name}</td>
-                    <td>{member.DateOfBirth}</td>
+                    <td>{member.date_of_birth}</td>
                     <td>{member.city}</td>
-                    <td>{member.CIN}</td>
-                    <td>{member.MIF}</td>
-                    <td>{member.Accounts}</td>
+                    <td>{member.cin}</td>
+                    <td>{member.mif}</td>
+                    <td>{member.account_number}</td>
                     <td>
-                      <div className={`status ${member.MIFstatus === 'active' ? 'active' : 'inactive'}`}>
-                        {member.MIFstatus}
+                      <div className={`status ${member.mif_status === 'active' ? 'active' : 'inactive'}`}>
+                        {member.mif_status}
                       </div>
                     </td>
                     <td>
                       <div
                         className={`status ${
-                          member.Enrollmentstatus === 'Enrolled'
+                          member.enrollment_status === 'Enrolled'
                             ? 'Enrolled'
-                            : member.Enrollmentstatus === 'Excluded'
+                            : member.enrollment_status === 'Excluded'
                             ? 'Excluded'
                             : 'pending'
                         }`}
                       >
-                        {member.Enrollmentstatus}
+                        {member.enrollment_status}
                       </div>
                     </td>
 
@@ -239,7 +222,7 @@ const Member = () => {
         </div>
       </TableWrapper>
       {ismemberModalVisible && (
-        <CustomModal size="sm" show onHide={handleClosememberModal} heading="Add Question">
+        <CustomModal size="sm" show onHide={handleClosememberModal} heading="Add Member">
           <Addmemberform handleQuestionSubmittion={handlememberSubmission} handleClose={handleClosememberModal} />
         </CustomModal>
       )}

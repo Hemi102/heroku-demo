@@ -1,53 +1,33 @@
 import Input from 'components/common/input';
-import { ErrorMessage, Formik } from 'formik';
-import * as yup from 'yup';
+import {outreachLeaderInitialValues, outreahLoaderSchema} from 'constants/outreachLeader';
+import {ErrorMessage, Formik} from 'formik';
 
-
-const schema = yup.object().shape({
-  name: yup.string().required(),
-  email: yup.string().email().required(),
-  username: yup.string().required(),
-  password: yup.string().required(),
-  defaultLocation: yup.string().required()
-});
-
-
-
-const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
+const OutreachForm = ({handleQuestionSubmittion, handleClose, currentOutreachLeeaderEdit}) => {
   return (
     <Formik
-      initialValues={{
-        name: '',
-        email: '',
-        username: '',
-        password: '',
-        defaultLocation: ''
-      }}
-
-
-      validationSchema={schema}
+      initialValues={
+        typeof currentOutreachLeeaderEdit === 'object' ? currentOutreachLeeaderEdit : outreachLeaderInitialValues
+      }
+      validationSchema={outreahLoaderSchema}
       onSubmit={values => {
         handleQuestionSubmittion(values);
       }}
     >
-      {({ handleChange, setFieldValue, values, handleSubmit, errors }) => {
-
-        console.log('errors are', errors);
-        console.log('values are', values);
+      {({handleChange, values, handleSubmit}) => {
         return (
           <div className="question-modal">
             <form className="form-main" onSubmit={handleSubmit}>
-              <div className='d-flex justify-content-between'>
+              <div className="d-flex justify-content-between">
                 <div>
                   <Input
                     handleChange={handleChange}
                     placeholder="Name"
                     type="text"
                     label="Name"
-                    value={values.name}
-                    name="name"
+                    value={values.full_name}
+                    name="full_name"
                   />
-                  <ErrorMessage component="p" name="name" />
+                  <ErrorMessage component="p" name="full_name" />
                 </div>
                 <div>
                   <Input
@@ -61,7 +41,7 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                   <ErrorMessage component="p" name="email" />
                 </div>
               </div>
-              <div className='d-flex justify-content-between'>
+              <div className="d-flex justify-content-between">
                 <div>
                   <Input
                     handleChange={handleChange}
@@ -90,10 +70,10 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                 placeholder="Default Location"
                 type="text"
                 label="Default Location"
-                value={values.defaultLocation}
-                name="defaultLocation"
+                value={values.location}
+                name="location"
               />
-              <ErrorMessage component="p" name="defaultLocation" />
+              <ErrorMessage component="p" name="location" />
 
               <div className="action gap-2">
                 <button className="secondary-btn w-50" type="button" onClick={handleClose}>
@@ -103,11 +83,10 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
               </div>
             </form>
           </div>
-
         );
       }}
     </Formik>
   );
 };
 
-export default AddQuestionForm;
+export default OutreachForm;

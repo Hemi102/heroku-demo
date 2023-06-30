@@ -2,80 +2,69 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {Pencil, Plus, Trash, TrashSimple, UploadSimple} from 'phosphor-react';
 import TableWrapper from 'components/common/table-wrapper';
 import {DEBOUNCE_DELAY, initialMetaForTable} from 'constants/common';
-import {debounce} from 'lodash';
 import CustomModal from 'components/common/modal';
-import Addmanagerform from './Addmanagerform';
-
+import CareManagerForm from './CareManagerForm';
+import {
+  createLeadCareManager,
+  deleteLeadCareManager,
+  getLeadCareManagers,
+  updateLeadCareManager,
+} from 'containers/leadcaremanager/api';
+let timeout;
 const Leadcaremanagers = () => {
-  const [managersList, setManagersList] = useState([
-    {
-      name: 'Watson Jhonson',
-      email: 'watsonjhonson@gamil.com',
-      location: 'Titanium Northren California',
-      capacitylimit: '5/49',
-      dateCreated: 'Apr 3, 2023',
-      checked: false,
-    },
-    {
-      name: 'Watson Jhonson',
-      email: 'watsonjhonson@gamil.com',
-      location: 'Titanium Northren California',
-      capacitylimit: '5/49',
-      dateCreated: 'Apr 3, 2023',
-      checked: false,
-    },
-    {
-      name: 'Watson Jhonson',
-      email: 'watsonjhonson@gamil.com',
-      location: 'Titanium Northren California',
-      capacitylimit: '5/49',
-      dateCreated: 'Apr 3, 2023',
-      checked: false,
-    },
-  ]);
-
-  const MAX_CAPACITY = 49;
-
+  // const MAX_CAPACITY = 49;
+  const [managersList, setManagersList] = useState();
+  const [totalCount, setTotalCount] = useState(0);
   const [selectAll, setSelectAll] = useState(false);
   const [meta, setMeta] = useState(initialMetaForTable);
   const [loading, setLoading] = useState(true);
   const [selectedManagers, setSelectedManagers] = useState(0);
   const [isManagerModalVisible, setIsManagerModalVisible] = useState(false);
+  const [currentLeadCareManagerEdit, setCurrentLeadCareManagerEdit] = useState('');
+  const [refreshPage, setRefreshPage] = useState(false);
   console.log(loading);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debounceFn = useCallback(
-    debounce(() => {
-      setLoading(true);
-    }, DEBOUNCE_DELAY),
-    [meta.search],
-  );
-
+  const debounceFn = (callback, delay) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(callback, delay);
+  };
   const handleSetSearchQuery = value => {
-    setMeta(prevMeta => ({...prevMeta, search: value}));
-    debounceFn();
+    setMeta(pre => ({...pre, search: value}));
+    debounceFn(handleRefreshPage, DEBOUNCE_DELAY);
   };
 
   const handlePageChange = value => {
-    setMeta(prevMeta => ({...prevMeta, page: value}));
-    setLoading(true);
+    setMeta(pre => ({...pre, page: value}));
+    handleRefreshPage();
+  };
+  const handleRefreshPage = () => {
+    setRefreshPage(pre => !pre);
   };
 
-  const handleManagerSubmission = manager => {
-    setManagersList(prevList => [
-      ...prevList,
-      {
-        name: manager.name,
-        careCoordinatorName: manager.careCoordinatorName,
-        email: manager.email,
-        location: manager.location,
-        capacitylimit: `${manager.capacitylimit}/${MAX_CAPACITY}`,
-        dateCreated: 'Apr 3, 2023',
-        checked: false,
-      },
-    ]);
-    handleCloseManagerModal();
+  const handleManagerSubmission = async manager => {
+    try {
+      if (typeof currentLeadCareManagerEdit === 'object') {
+        const {id} = manager;
+        const result = await updateLeadCareManager(manager, id);
+        if (result) {
+          handleCloseManagerModal();
+          handleRefreshPage();
+        }
+      } else {
+        const result = await createLeadCareManager(manager);
+        if (result) {
+          handleCloseManagerModal();
+          handleRefreshPage();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
-
+  const handleDeleteLeadCareManager = async id => {
+    const result = await deleteLeadCareManager(id);
+    if (result) handleRefreshPage();
+  };
   const handleSelectAll = () => {
     const updatedCheckboxes = managersList.map(checkbox => ({
       ...checkbox,
@@ -93,16 +82,37 @@ const Leadcaremanagers = () => {
 
   const handleCloseManagerModal = () => {
     setIsManagerModalVisible(false);
+    setCurrentLeadCareManagerEdit('');
   };
   const handleOpenManagerModal = () => {
     setIsManagerModalVisible(true);
   };
+  const fetchQuestions = useCallback(async () => {
+    setLoading(true);
+    try {
+      const result = await getLeadCareManagers(meta);
+      if (result['lead_care_managers']) {
+        const data = result?.lead_care_managers.map(item => ({...item, checked: selectAll}));
+        setManagersList(data);
+        setTotalCount(result?.meta.total_count);
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [refreshPage]);
+
+  useEffect(() => {
+    fetchQuestions();
+  }, [fetchQuestions]);
   useEffect(() => {
     setSelectedManagers(
       selectAll
         ? managersList.length
-        : managersList.reduce((accumulator, item) => {
+        : managersList?.reduce((accumulator, item) => {
             if (item.checked) {
               return accumulator + 1;
             } else return accumulator;
@@ -116,7 +126,7 @@ const Leadcaremanagers = () => {
         searchPlaceholder="Search Lead Care Managers"
         setSearhQuery={handleSetSearchQuery}
         searchValue={meta.search}
-        totalListCount={100}
+        totalListCount={totalCount}
         pageSize={meta.perPage}
         currentPage={meta.page}
         onPageChange={handlePageChange}
@@ -174,7 +184,7 @@ const Leadcaremanagers = () => {
                 </tr>
               </thead>
               <tbody>
-                {managersList.map((manager, index) => (
+                {managersList?.map((manager, index) => (
                   <tr key={index}>
                     <td>
                       <div className="form-check ps-3 mb-0">
@@ -188,16 +198,31 @@ const Leadcaremanagers = () => {
                       </div>
                     </td>
                     <td>
-                      {manager.name} , {manager.careCoordinatorName}
+                      {manager.name} , {manager.care_coordinator_name}
                     </td>
                     <td>{manager.email}</td>
                     <td>{manager.location}</td>
-                    <td>{`${manager.capacitylimit}`}</td>
+                    <td>{`${manager.capacity}`}</td>
                     <td>{manager.dateCreated}</td>
 
                     <td>
-                      <Pencil size={24} className="opacity-50" />
-                      <Trash size={24} className="ms-3 opacity-50" />
+                      <Pencil
+                        size={24}
+                        className="opacity-50"
+                        style={{cursor: 'pointer'}}
+                        onClick={() => {
+                          setCurrentLeadCareManagerEdit(manager);
+                          handleOpenManagerModal();
+                        }}
+                      />
+                      <Trash
+                        size={24}
+                        className="ms-3 opacity-50"
+                        style={{cursor: 'pointer'}}
+                        onClick={() => {
+                          manager?.id && handleDeleteLeadCareManager(manager.id);
+                        }}
+                      />
                     </td>
                   </tr>
                 ))}
@@ -207,8 +232,17 @@ const Leadcaremanagers = () => {
         </div>
       </TableWrapper>
       {isManagerModalVisible && (
-        <CustomModal size="sm" show onHide={handleCloseManagerModal} heading="Add Question">
-          <Addmanagerform handleQuestionSubmittion={handleManagerSubmission} handleClose={handleCloseManagerModal} />
+        <CustomModal
+          size="sm"
+          show
+          onHide={handleCloseManagerModal}
+          heading={`${currentLeadCareManagerEdit ? 'Edit' : 'Add'} Lead Care Manager`}
+        >
+          <CareManagerForm
+            handleQuestionSubmittion={handleManagerSubmission}
+            handleClose={handleCloseManagerModal}
+            currentLeadCareManagerEdit={currentLeadCareManagerEdit}
+          />
         </CustomModal>
       )}
     </>

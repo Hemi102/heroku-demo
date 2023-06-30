@@ -1,43 +1,18 @@
 import Input from 'components/common/input';
-import { ErrorMessage, Formik } from 'formik';
-import * as yup from 'yup';
+import {memberInitialValues, memberSchema} from 'constants/members';
+import {ErrorMessage, Formik} from 'formik';
 
-
-const schema = yup.object().shape({
-  name: yup.string().required(),
-  DateOfBirth: yup.string().required(),
-  city: yup.string().required(),
-  CIN: yup.string().required(),
-  MIF: yup.string().required(),
-  Accounts: yup.string().required(),
-  MIFstatus: yup.string().required(),
-  Enrollmentstatus: yup.string().required(),
-});
-
-
-const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
+const AddQuestionForm = ({handleQuestionSubmittion, handleClose}) => {
   return (
     <Formik
-      initialValues={{
-        name: '',
-        DateOfBirth: '',
-        city: '',
-        CIN: '',
-        MIF: '',
-        Accounts: '',
-        MIFstatus: '',
-        Enrollmentstatus: '',
-      }}
-
-      validationSchema={schema}
+      initialValues={memberInitialValues}
+      validationSchema={memberSchema}
       onSubmit={values => {
         handleQuestionSubmittion(values);
       }}
     >
-      {({ handleChange, setFieldValue, values, handleSubmit, errors }) => {
-
-        console.log('errors are', errors);
-        console.log('values are', values);
+      {({handleChange, values, handleSubmit, errors}) => {
+        console.log('errors', errors);
         return (
           <div className="question-modal">
             <form className="form-main" onSubmit={handleSubmit}>
@@ -53,15 +28,15 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                   />
                   <ErrorMessage component="p" name="name" />
                 </div>
-                <div style={{ width: '44%' }}>
+                <div style={{width: '44%'}}>
                   <Input
                     handleChange={handleChange}
                     type="date"
                     label="Date of Birth"
-                    name="DateOfBirth"
+                    name="date_of_birth"
                     placeholderText="Date of Birth"
                   />
-                  <ErrorMessage component="p" name="DateOfBirth" />
+                  <ErrorMessage component="p" name="date_of_birth" />
                 </div>
               </div>
               <div className="d-flex justify-content-between">
@@ -79,13 +54,13 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                 <div>
                   <Input
                     handleChange={handleChange}
-                    placeholder="CIN"
+                    placeholder="cin"
                     type="text"
-                    label="CIN"
-                    value={values.CIN}
-                    name="CIN"
+                    label="cin"
+                    value={values.cin}
+                    name="cin"
                   />
-                  <ErrorMessage component="p" name="CIN" />
+                  <ErrorMessage component="p" name="cin" />
                 </div>
               </div>
               <div className="d-flex justify-content-between">
@@ -94,20 +69,20 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                     handleChange={handleChange}
                     placeholder="MIF"
                     type="text"
-                    label="MIF"
-                    value={values.MIF}
-                    name="MIF"
+                    label="mif"
+                    value={values.mif}
+                    name="mif"
                   />
-                  <ErrorMessage component="p" name="MIF" />
+                  <ErrorMessage component="p" name="mif" />
                 </div>
                 <div class="mif-otr row">
-                  <label htmlFor="MIFstatus">MIF Status</label>
-                  <div className='select-wrapper'>
+                  <label htmlFor="mif_status">MIF Status</label>
+                  <div className="select-wrapper">
                     <select
-                      id="MIFstatus"
-                      name="MIFstatus"
-                      class="theme-input"
-                      value={values.MIFstatus}
+                      id="mif_status"
+                      name="mif_status"
+                      className="theme-input"
+                      value={values.mif_status}
                       onChange={handleChange}
                     >
                       <option value="">MIF status</option>
@@ -115,32 +90,30 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                       <option value="inactive">Inactive</option>
                     </select>
                   </div>
-                  <ErrorMessage component="p" name="MIFstatus" />
+                  <ErrorMessage component="p" name="mif_status" />
                 </div>
-
-
               </div>
               <div className="d-flex justify-content-between">
                 <div>
                   <Input
                     handleChange={handleChange}
-                    placeholder="Accounts"
+                    placeholder="account_number"
                     type="text"
-                    label="Accounts"
-                    value={values.Accounts}
-                    name="Accounts"
+                    label="account_number"
+                    value={values.account_number}
+                    name="account_number"
                   />
-                  <ErrorMessage component="p" name="Accounts" />
+                  <ErrorMessage component="p" name="account_number" />
                 </div>
 
                 <div class="enrollment-otr row">
-                  <label htmlFor="Enrollmentstatus">Enrollment</label>
+                  <label htmlFor="enrollment_status">Enrollment</label>
                   <div class="select-wrapper">
                     <select
-                      id="Enrollmentstatus"
-                      name="Enrollmentstatus"
+                      id="enrollment_status"
+                      name="enrollment_status"
                       class="theme-input"
-                      value={values.Enrollmentstatus}
+                      value={values.enrollment_status}
                       onChange={handleChange}
                     >
                       <option value="">Enrol status</option>
@@ -149,10 +122,10 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
                       <option value="pending">pending</option>
                     </select>
                   </div>
-                  <ErrorMessage component="p" name="Enrollmentstatus" />
+                  <ErrorMessage component="p" name="enrollment_status" />
                 </div>
               </div>
-              <hr/>
+              <hr />
               <div className="action gap-2">
                 <button className="secondary-btn w-50" type="button" onClick={handleClose}>
                   Cancel
@@ -161,7 +134,6 @@ const AddQuestionForm = ({ handleQuestionSubmittion, handleClose }) => {
               </div>
             </form>
           </div>
-
         );
       }}
     </Formik>

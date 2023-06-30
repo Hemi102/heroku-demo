@@ -80,6 +80,7 @@ const Questionslist = () => {
     if (result) handleRefreshPage();
   };
   const fetchQuestions = useCallback(async () => {
+    setLoading(true);
     const result = await getQuestions(meta);
 
     if (result['questions']) {
@@ -87,7 +88,7 @@ const Questionslist = () => {
       setQuestionsList(data);
       setTotalCount(result?.meta.total_count);
     }
-
+    setLoading(false);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [refreshPage]);
 
